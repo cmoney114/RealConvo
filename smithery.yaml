@@ -1,0 +1,23 @@
+# smithery.yaml (place at repo root)
+name: your-org/your-mcp
+description: Short one-liner for your MCP server
+startCommand:
+  type: stdio
+  command: ["node", "dist/index.js"]   # or ["python", "-m", "your_pkg.server"]
+build:
+  dockerBuildPath: .
+# Optional: declare required env vars
+env:
+  - name: API_KEY
+    required: true
+# Optional: tighten network permissions
+permissions:
+  network:
+    allowed:
+      - "https://api.example.com"
+# Optional: JSON Schema for per-session config from clients
+# configSchema:
+#   type: object
+#   properties:
+#     region: { type: string }
+#   additionalProperties: false
