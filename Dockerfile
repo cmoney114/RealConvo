@@ -1,8 +1,18 @@
-FROM python:3.11-slim
+FROM python:3.11-alpine
+
+# Make sure pip is up-to-date
+RUN pip install --no-cache-dir --upgrade pip
+
+# Set working directory
 WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-COPY requirements.txt ./
+
+# Copy requirements first for build caching
+COPY requirements.txt .
+
+# Install only runtime deps
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the app
 COPY . .
-# Smithery uses startCommand from smithery.yaml
+
+# No CMD here — Smithery uses smithery.yaml startCommand
