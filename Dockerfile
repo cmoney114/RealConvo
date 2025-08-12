@@ -1,17 +1,8 @@
-# Use lightweight Node image
-FROM node:20-alpine
-
-# Set working directory
+FROM python:3.11-slim
 WORKDIR /app
-
-# Install dependencies first (better caching)
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-# Copy the rest of the code
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-
-# Build (only needed for TypeScript projects)
-RUN npm run build
-
-# No CMD here — Smithery uses the smithery.yaml startCommand
+# Smithery uses startCommand from smithery.yaml
